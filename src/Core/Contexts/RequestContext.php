@@ -59,6 +59,7 @@ class RequestContext
         }
 
         $coroutineContext = self::$context[$coroutineId];
+        self::clearCidContext();
         if (isset($coroutineContext[$key])) {
             return $coroutineContext[$key];
         }

@@ -36,6 +36,7 @@ class RedisContext
         }
 
         $coroutineContext = self::$context[$coroutineId];
+        self::clearCidContext();
         if (isset($coroutineContext)) {
             return $coroutineContext();
         }
