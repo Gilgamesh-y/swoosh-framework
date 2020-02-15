@@ -2,7 +2,7 @@
 
 use Src\App;
 use Src\Helper\StringHelper;
-use Src\Core\Contexts\RequestContext;
+use Src\Dispatcher\RequestContext;
 
 /**
  * @param      $key
@@ -217,13 +217,13 @@ if (!function_exists('request')) {
     function request($key = null)
     {
         if (is_array($key)) {
-            return RequestContext::getRequest()->only($key);
+            return RequestContext::get(RequestContext::REQUEST_KEY)->only($key);
         }
         if (is_string($key)) {
-            return RequestContext::getRequest()->get($key);
+            return RequestContext::get(RequestContext::REQUEST_KEY)->get($key);
         }
 
-        return RequestContext::getRequest();
+        return RequestContext::get(RequestContext::REQUEST_KEY);
     }
 }
 
