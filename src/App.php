@@ -4,6 +4,7 @@ namespace Src;
 
 use Dotenv\Dotenv;
 use Src\Core\Config;
+use Src\Helper\Snowflake;
 
 class App
 {
@@ -22,6 +23,11 @@ class App
         self::$app = new \Src\Core\App();
         self::$app->set('config', function (){
             return new Config();
+        });
+
+        // Load snowflake
+        self::$app->set('snowflake', function ($woker_id){
+            return new Snowflake($woker_id);
         });
     }
 

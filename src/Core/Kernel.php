@@ -46,6 +46,18 @@ class Kernel
         }
     }
 
+    /**
+     * Active the application.
+     *
+     * @return void
+     */
+    public function active()
+    {
+        if (!$this->app->hasBeenActived()) {
+            $this->app->activeWith($this->needActiveProviders());
+        }
+    }
+
     public function getMiddleware(): array
     {
         return $this->middleware;
@@ -64,6 +76,16 @@ class Kernel
     protected function bootstrappers()
     {
         return $this->bootstrappers;
+    }
+
+    /**
+     * Get the need active providers classes for the application.
+     *
+     * @return array
+     */
+    protected function needActiveProviders()
+    {
+        return $this->needActiveProviders;
     }
 
     /**

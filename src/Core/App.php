@@ -19,26 +19,33 @@ class App
      */
     protected $hasBeenBootstrapped = false;
 
+    /**
+     * Indicates if the application has been actived before.
+     *
+     * @var bool
+     */
+    protected $hasBeenActived = false;
+
     public function set($name, $definition)
     {
         $this->app[$name] = $definition;
     }
 
-    public function get($name)
+    public function get($name, ...$args)
     {
         if (!isset($this->app[$name])) {
             return;
         }
         if ($this->app[$name] instanceof \Closure) {
-            $this->app[$name] = $this->app[$name]();
+            $this->app[$name] = $this->app[$name](...$args);
         }
 
         return $this->app[$name];
     }
 
-    public function active($name)
+    public function active($name, ...$args)
     {
-        return $this->get($name);
+        return $this->get($name, ...$args);
     }
 
     /**
@@ -53,6 +60,21 @@ class App
 
         foreach ($bootstrappers as $bootstrapper) {
             $this->make($bootstrapper)->bootstrap($this);
+        }
+    }
+
+    /**
+     * Run the given array of providers classes.
+     *
+     * @param  array  $providers
+     * @return void
+     */
+    public function activeWith(array $providers)
+    {
+        $this->hasBeenActived = true;
+
+        foreach ($providers as $provider) {
+            (new $provider($this))->active();
         }
     }
 
@@ -143,5 +165,15 @@ class App
     public function hasBeenBootstrapped()
     {
         return $this->hasBeenBootstrapped;
+    }
+
+    /**
+     * Determine if the application has been Actived before.
+     *
+     * @return bool
+     */
+    public function hasBeenActived()
+    {
+        return $this->hasBeenActived;
     }
 }
